@@ -1,9 +1,11 @@
-import { Model, DataType, Table, Column, ForeignKey, BelongsTo } from "sequelize-typescript";
+import { Model, DataType, Table, Column, ForeignKey, BelongsTo, BelongsToMany, HasMany } from "sequelize-typescript";
+import { Player } from "src/players/players.model";
+import { Report } from "src/reports/reports.model";
 import { Team } from "src/teams/teams.model";
 
 interface UserCreationAttrs{
   name: string
-  password: string
+  password?: string
   type: string
   status: string
   team_id: number
@@ -36,4 +38,10 @@ export class User extends Model<User, UserCreationAttrs>{
 
   @BelongsTo(()=>Team)
   team: Team
+
+  @HasMany(()=>Player)
+  players: Player[]
+
+  @HasMany(()=>Report)
+  reports: Report[]
 }

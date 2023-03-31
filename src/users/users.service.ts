@@ -6,11 +6,14 @@ import { User } from './users.model';
 import * as bcrypt from "bcryptjs"
 import { LoginDto } from './login.dto';
 import { BlockListService } from 'src/block-list/block-list.service';
+import { Team } from 'src/teams/teams.model';
+import { TeamsService } from 'src/teams/teams.service';
 
 @Injectable()
 export class UsersService {
   constructor (
     @InjectModel(User) private userRepository: typeof User,
+    private teamsService: TeamsService,
     private jwtService: JwtService,
     private blockListService: BlockListService
   ){}
@@ -19,6 +22,11 @@ export class UsersService {
     try{
       if (!userDto){
         throw new BadRequestException({message: "Bad data for user"})
+      }
+      const team = await this.teamsService.findById(userDto.team_id)
+      if(!team){
+        const team = await this.teamsService.create({name: 'Autocreated team'})
+        userDto.team_id = team.id
       }
       const hashPassword = await bcrypt.hash(userDto.password, 5)
       const user = await this.userRepository.create({...userDto, password: hashPassword})
@@ -104,6 +112,37 @@ export class UsersService {
     return {
       accessToken: this.jwtService.sign(payload, {secret: process.env.ACCESS_PRIVATE_KEY, expiresIn: "15h"}),
       refreshToken: this.jwtService.sign(payload, {secret: process.env.REFRESH_PRIVATE_KEY, expiresIn: "15d"})
+    }
+  }
+
+  async find_all(){
+    const users = await this.userRepository.findAll({attributes: {exclude: ['password']}})
+    return users
+  }
+
+  async find_by_id(id){
+    const user = await this.userRepository.findOne({where: {id}, attributes: {exclude: ['password']}})
+    return user
+  }
+
+  async update_by_id(id, userDto: UserDto){
+    try{
+      const hashPassword = await bcrypt.hash(userDto.password, 5)
+      await this.userRepository.update({...userDto, password: hashPassword}, {where: {id}})
+      const user = await this.find_by_id(id)
+      return user
+    }
+    catch(e){
+      throw e
+    }
+  }
+
+  async delete_by_id(id){
+    try {
+      await this.userRepository.destroy({where: {id}})
+      return true
+    } catch (e) {
+      throw e
     }
   }
 }

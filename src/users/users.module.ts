@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { BlockListModule } from 'src/block-list/block-list.module';
-import { Team } from 'src/teams/teams.model';
 import { UsersController } from './users.controller';
 import { User } from './users.model';
 import { UsersService } from './users.service';
+import { TeamsModule } from 'src/teams/teams.module';
 
 @Module({
   controllers: [UsersController],
@@ -19,7 +19,8 @@ import { UsersService } from './users.service';
         }
       }
     ),
-    BlockListModule
+    BlockListModule,
+    TeamsModule
   ],
   exports: [JwtModule]
 })
