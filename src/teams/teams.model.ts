@@ -1,4 +1,5 @@
 import { Model, DataType, Table, Column, HasMany } from "sequelize-typescript";
+import { TeamPayout } from "src/team_payout/team_payout.model";
 import { User } from "src/users/users.model";
 
 interface TeamCreationAttrs{
@@ -17,4 +18,7 @@ export class Team extends Model<Team, TeamCreationAttrs>{
 
   @HasMany(()=>User)
   users: User[]
+
+  @HasMany(()=>TeamPayout)
+  team_payouts: TeamPayout[]
 }

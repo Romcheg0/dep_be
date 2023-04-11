@@ -1,12 +1,13 @@
 import { Model, DataType, Table, Column, HasMany, ForeignKey, BelongsTo } from "sequelize-typescript";
 import { Advertiser } from "src/advertisers/advertisers.model";
-import { Report } from "src/reports/reports.model";
+import { TeamPayout } from "src/team_payout/team_payout.model";
 
 interface OfferCreationAttrs{
   name: string
   advertiser_id: number
   adv_payout: number
   tl_payout: number
+  geo: string
   payout_currency: string
   payback_date: string
 }
@@ -22,12 +23,17 @@ export class Offer extends Model<Offer, OfferCreationAttrs>{
   @ForeignKey(()=>Advertiser)
   @Column({type: DataType.INTEGER})
   advertiser_id: number
+
   @Column({type: DataType.DECIMAL, allowNull: false})
   adv_payout: number;
   
   @Column({type: DataType.DECIMAL, allowNull: false})
   tl_payout: number;
   
+  @Column({type: DataType.STRING})
+  geo: string
+
+
   @Column({type: DataType.STRING, allowNull: false})
   payout_currency: string;
 
@@ -37,6 +43,6 @@ export class Offer extends Model<Offer, OfferCreationAttrs>{
   @BelongsTo(()=>Advertiser)
   advertiser: Advertiser
 
-  @HasMany(()=>Report)
-  reports: Report[]
+  @HasMany(()=>TeamPayout)
+  teams_payout: TeamPayout[]
 }

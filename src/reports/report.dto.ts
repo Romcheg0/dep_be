@@ -7,4 +7,5 @@ export class ReportDto{
   player_id: number
   currency: string
   is_verified: boolean
+  is_fd: boolean
 }

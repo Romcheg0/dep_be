@@ -5,4 +5,5 @@ export class UserDto{
   type: string
   status: string
   team_id: number
+  payout: number
 }

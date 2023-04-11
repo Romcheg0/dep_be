@@ -1,12 +1,14 @@
 import { Model, DataType, Table, Column, HasMany, ForeignKey, BelongsTo, HasOne } from "sequelize-typescript";
+import { Lead } from "src/lead/leads.model";
 import { Player } from "src/players/players.model";
 import { Report } from "src/reports/reports.model";
 
 interface PlannedDepositCreationAttrs{
-  player_id: number
+  lead_id: number
   deposit_sum: number
   deposit_currency: string
   is_completed: boolean
+  deposit_date: string
   report_id: number
 }
 
@@ -15,9 +17,9 @@ export class PlannedDeposit extends Model<PlannedDeposit, PlannedDepositCreation
   @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true })
   id: number;
   
-  @ForeignKey(()=>Player)
+  @ForeignKey(()=>Lead)
   @Column({type: DataType.INTEGER, allowNull: false})
-  player_id: number;
+  lead_id: number;
 
   @Column({type: DataType.DECIMAL})
   deposit_sum: number;
@@ -28,13 +30,12 @@ export class PlannedDeposit extends Model<PlannedDeposit, PlannedDepositCreation
   @Column({type: DataType.BOOLEAN})
   is_completed: boolean;
 
-  @ForeignKey(()=>Report)
-  @Column({type: DataType.INTEGER, allowNull: false})
+  @Column({type: DataType.DATE})
+  deposit_date: string
+
+  @Column({type: DataType.INTEGER})
   report_id: number;
 
-  @BelongsTo(()=>Report)
-  report: Report
-
-  @BelongsTo(()=>Player)
-  player: Player
+  @BelongsTo(()=>Lead)
+  lead: Lead
 }

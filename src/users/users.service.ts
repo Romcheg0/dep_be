@@ -69,7 +69,8 @@ export class UsersService {
         username: data["username"], 
         type: data["type"], 
         status: data["status"], 
-        team_id: data["team_id"]
+        team_id: data["team_id"],
+        payout: data["payout"]
       }
       await this.logout(authToken.split(' ')[1])
       return {
@@ -97,18 +98,17 @@ export class UsersService {
       throw new UnauthorizedException({message: 'Incorrect username'})
     }
     else{
-      const isNameEquals = loginDto.name === user.name
       const isPasswordEquals = await bcrypt.compare(loginDto.password, user.password)
-      if(isNameEquals && isPasswordEquals){
+      if(isPasswordEquals){
         return true
       }
     }
-    throw new UnauthorizedException({message: 'Incorrect data for user'})
+    throw new UnauthorizedException({message: 'Incorrect password for user'})
   }
 
   private async generateTokens(username){
     const user = await this.findByUsername(username)
-    const payload = {id: user.id, name: user.name, username: user.username, type: user.type, status: user.status, team_id: user.team_id}
+    const payload = {id: user.id, name: user.name, username: user.username, type: user.type, status: user.status, team_id: user.team_id, payout: user.payout}
     return {
       accessToken: this.jwtService.sign(payload, {secret: process.env.ACCESS_PRIVATE_KEY, expiresIn: "15h"}),
       refreshToken: this.jwtService.sign(payload, {secret: process.env.REFRESH_PRIVATE_KEY, expiresIn: "15d"})

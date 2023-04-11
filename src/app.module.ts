@@ -18,6 +18,10 @@ import { Offer } from './offers/offers.model';
 import { Report } from './reports/reports.model';
 import { PlannedDepositsModule } from './planned_deposits/planned_deposits.module';
 import { PlannedDeposit } from './planned_deposits/planned_deposits.model';
+import { LeadsModule } from './lead/leads.module';
+import { Lead } from './lead/leads.model';
+import { TeamPayoutModule } from './team_payout/team_payout.module';
+import { TeamPayout } from './team_payout/team_payout.model';
 
 @Module({
   imports: [
@@ -29,7 +33,7 @@ import { PlannedDeposit } from './planned_deposits/planned_deposits.model';
       username: process.env.POSTGRES_USERNAME,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DATABASE,
-      models: [User, Team, Messenger, Player, Advertiser, Offer, Report, PlannedDeposit],
+      models: [User, Team, Messenger, Player, Advertiser, Offer, Report, PlannedDeposit, Lead, TeamPayout],
       autoLoadModels: true
     }),
     UsersModule,
@@ -40,7 +44,9 @@ import { PlannedDeposit } from './planned_deposits/planned_deposits.model';
     AdvertisersModule,
     OffersModule,
     ReportsModule,
-    PlannedDepositsModule
+    PlannedDepositsModule,
+    LeadsModule,
+    TeamPayoutModule
   ]
 })
 export class AppModule {}

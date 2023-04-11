@@ -1,7 +1,5 @@
 import { Model, DataType, Table, Column, ForeignKey, HasOne, HasMany, BelongsTo } from "sequelize-typescript";
 import { Messenger } from "src/messengers/messengers.model";
-import { PlannedDeposit } from "src/planned_deposits/planned_deposits.model";
-import { Report } from "src/reports/reports.model";
 import { User } from "src/users/users.model";
 
 interface PlayerCreationAttrs{
@@ -9,6 +7,9 @@ interface PlayerCreationAttrs{
   worker_id: number
   messenger_id: number
   messenger_name: string
+  payment_data: string
+  payment_name: string
+  status: string
 }
 
 @Table({tableName: "players"})
@@ -34,6 +35,9 @@ export class Player extends Model<Player, PlayerCreationAttrs>{
   payment_data: string;
 
   @Column({type: DataType.STRING})
+  status: string
+
+  @Column({type: DataType.STRING})
   payment_name: string;
 
   @BelongsTo(()=>User)
@@ -41,10 +45,4 @@ export class Player extends Model<Player, PlayerCreationAttrs>{
 
   @BelongsTo(()=>Messenger)
   messenger: Messenger
-
-  @HasMany(()=>Report)
-  reports: Report[]
-
-  @HasMany(()=>PlannedDeposit)
-  deposits: PlannedDeposit[]
 }

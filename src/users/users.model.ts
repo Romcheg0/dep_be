@@ -32,6 +32,9 @@ export class User extends Model<User, UserCreationAttrs>{
   @Column({type: DataType.STRING, allowNull: false})
   status: string;
 
+  @Column({type: DataType.DECIMAL})
+  payout: number
+
   @ForeignKey(()=>Team)
   @Column({type: DataType.INTEGER, allowNull: false})
   team_id: number;
