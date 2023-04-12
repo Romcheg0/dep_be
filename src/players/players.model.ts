@@ -40,6 +40,12 @@ export class Player extends Model<Player, PlayerCreationAttrs>{
   @Column({type: DataType.STRING})
   payment_name: string;
 
+  @Column({type: DataType.STRING})
+  sub_id: string
+
+  @Column({type: DataType.STRING})
+  ip: string
+
   @BelongsTo(()=>User)
   worker: User
 
