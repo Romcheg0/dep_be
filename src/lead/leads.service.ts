@@ -14,8 +14,12 @@ export class LeadsService {
       if (!leadDto){
         throw new BadRequestException({message: "Bad data for lead"})
       }
-      const lead = await this.leadRepository.create(leadDto)
-      return lead
+      const exist = await this.leadRepository.findOne({where: {player_id: leadDto.player_id, offer_id: leadDto.offer_id}})
+      if(exist){
+        throw new BadRequestException({message: "Lead with such data already exists"})
+      }
+        const lead = await this.leadRepository.create(leadDto)
+        return lead
     }
     catch(e){
       throw e
