@@ -4,8 +4,7 @@ import { User } from "src/users/users.model";
 
 interface TeamCreationAttrs{
   name: string
-  teamlead_id: number
-  created_at: string
+  color: string
 }
 
 @Table({tableName: "teams"})
@@ -15,6 +14,9 @@ export class Team extends Model<Team, TeamCreationAttrs>{
   
   @Column({type: DataType.STRING, allowNull: false})
   name: string;
+
+  @Column({type: DataType.STRING})
+  color: string
 
   @HasMany(()=>User)
   users: User[]

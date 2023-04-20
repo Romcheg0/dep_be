@@ -25,7 +25,7 @@ export class UsersService {
       }
       const team = await this.teamsService.findById(userDto.team_id)
       if(!team){
-        const team = await this.teamsService.create({name: 'Autocreated team'})
+        const team = await this.teamsService.create({name: 'Autocreated team', color: '#ffffff'})
         userDto.team_id = team.id
       }
       const hashPassword = await bcrypt.hash(userDto.password, 5)
